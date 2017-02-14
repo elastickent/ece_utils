@@ -36,7 +36,7 @@ if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
 fi
 
 sudo apt-get update -y
-sudo apt-get install -y  --force-yes docker-engine=1.11.2-0~trusty
+sudo apt-get install -y  --force-yes docker-engine=1.12.6-0~ubuntu-trusty
 
 if [ ! -f /mnt/data ]; then
     echo "Mount point not found. Formating /mnt/data"
