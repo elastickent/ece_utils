@@ -26,17 +26,19 @@ sudo apt-get upgrade -y
 
 
 # Install docker.
+sudo apt-key adv --keyserver keyserver.ubuntu.com \
+    --recv 58118E89F3A912897C070ADBF76221572C52609D
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 \
     --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
 if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
     echo "File not found. Creating:"
-    echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo \
-         tee /etc/apt/sources.list.d/docker.list
+    echo deb https://apt.dockerproject.org/repo ubuntu-trusty main | sudo \
+        tee /etc/apt/sources.list.d/docker.list
 fi
 
 sudo apt-get update -y
-sudo apt-get install -y  --force-yes docker-engine=1.12.6-0~ubuntu-trusty
+sudo apt-get install -y  --force-yes docker-engine=1.11*
 
 if [ ! -f /mnt/data ]; then
     echo "Mount point not found. Formating /mnt/data"
@@ -59,7 +61,7 @@ if grep -q "cgroup_enable" /etc/default/grub > /dev/null; then
     echo "A grub entry for cgroups is already present."
 else
     echo "Updating:"
-    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
+    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=nokem swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
     sudo mv -v /tmp/ece_temp_grub /etc/default/grub
     sudo update-grub
 fi
