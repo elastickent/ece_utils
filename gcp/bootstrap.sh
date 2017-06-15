@@ -111,6 +111,8 @@ net.core.netdev_max_backlog=32768
 SETTINGS
 fi
 
+echo "docker-engine hold" | sudo dpkg --set-selections
+
 echo "Sytem reboot in 10 seconds"
 
 sleep 10
