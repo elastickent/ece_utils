@@ -59,7 +59,7 @@ if grep -q "cgroup_enable" /etc/default/grub > /dev/null; then
     echo "A grub entry for cgroups is already present."
 else
     echo "Updating:"
-    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=nokem swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
+    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=nokmem swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
     sudo mv -v /tmp/ece_temp_grub /etc/default/grub
     sudo update-grub
 fi
