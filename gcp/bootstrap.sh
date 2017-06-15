@@ -20,7 +20,7 @@ if [ "$DISTRIB_RELEASE" != "14.04" ]; then
 fi
 
 
-sudo apt-get install -y linux-image-extra-$(uname -r) linux-image-extra-virtual xfsprogs
+sudo apt-get install -y  linux-generic-lts-xenial xfsprogs
 
 sudo apt-get upgrade -y
 
@@ -28,8 +28,6 @@ sudo apt-get upgrade -y
 # Install docker.
 sudo apt-key adv --keyserver keyserver.ubuntu.com \
     --recv 58118E89F3A912897C070ADBF76221572C52609D
-sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 \
-    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
 if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
     echo "File not found. Creating:"
@@ -99,7 +97,7 @@ sudo install -d -m 700 /mnt/data/docker
 if grep -q "xfs" /etc/default/docker > /dev/null; then
         echo "Docker already configured"
 else
-        echo "DOCKER_OPTS=\"-g /mnt/data/docker -s=devicemapper --storage-opt dm.fs=xfs --bip=172.17.42.1/16\"" | sudo tee -a /etc/default/docker
+        echo "DOCKER_OPTS=\"-g /mnt/data/docker -s=devicemapper --storage-driver=aufs --bip=172.17.42.1/16\"" | sudo tee -a /etc/default/docker
 fi
 
 sudo service docker restart
@@ -112,10 +110,6 @@ net.core.somaxconn=32768
 net.core.netdev_max_backlog=32768
 SETTINGS
 fi
-
-python -c "for i in range(10000,30000): print '{0}:{0}'.format(i)" | sudo tee /etc/projid > /dev/null
-# To seed entropy for the install script token generation. Will be removed with move the /dev/urandom happens.
-sudo apt-get install haveged -y
 
 echo "Sytem reboot in 10 seconds"
 
