@@ -59,7 +59,7 @@ if grep -q "cgroup_enable" /etc/default/grub > /dev/null; then
     echo "A grub entry for cgroups is already present."
 else
     echo "Updating:"
-    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=nokmem swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
+    sed 's/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cgroup_enable=memory swapaccount=1\"/g' /etc/default/grub | sudo tee /tmp/ece_temp_grub
     sudo mv -v /tmp/ece_temp_grub /etc/default/grub
     sudo update-grub
 fi
@@ -97,7 +97,7 @@ sudo install -d -m 700 /mnt/data/docker
 if grep -q "xfs" /etc/default/docker > /dev/null; then
         echo "Docker already configured"
 else
-        echo "DOCKER_OPTS=\"-g /mnt/data/docker -s=devicemapper --storage-driver=aufs --bip=172.17.42.1/16\"" | sudo tee -a /etc/default/docker
+        echo "DOCKER_OPTS=\"-g /mnt/data/docker --storage-driver=aufs --bip=172.17.42.1/16\"" | sudo tee -a /etc/default/docker
 fi
 
 sudo service docker restart
